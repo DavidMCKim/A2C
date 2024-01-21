@@ -19,9 +19,15 @@ class MONGO:
 
     def select(self, collection, data):
         try:
-            self.db[f'{collection}'].insert_one(data)
+            self.db[f'{collection}'].find_one(data)
         except Exception as e:
             print(e)
+            
+    def select(self, collection, data):
+        try:
+            self.db[f'{collection}'].find(data)
+        except Exception as e:
+            print(e)            
 
     def insert_one(self, collection, data):
         try:
