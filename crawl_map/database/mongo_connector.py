@@ -17,7 +17,8 @@ class MONGO():
             res = json.loads(req)
 
             channel_code = res['channel_code']
-            return channel_code
+            status       = res['status']
+            return channel_code, status
         
         except Exception as e:
             channel_code = '-2'
