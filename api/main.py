@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import uvicorn
-    
+
 def create_app():
     app = FastAPI()
     app.include_router(place.router)
@@ -29,7 +29,6 @@ def main():
     )
     
 if __name__ == "__main__":
-    # 개 불러오기
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(f'app/common/config.ini')
     main()
