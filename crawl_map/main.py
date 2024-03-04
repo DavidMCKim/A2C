@@ -40,31 +40,27 @@ def ProcessChannel():
 
         channel_code, server = mongo.GetServerInfo(hostname)
         # 채널별 수집
-        ScrapChannels(server, channel_code)
+        ScrapChannels(server, channel_code, mongo)
 
     except Exception as e:
         logger.error(e)
 
-def ScrapChannels(server, channel_code):
+def ScrapChannels(server, channel_code, mongo):
     try:
-        channel_name=config['DMP_CHANNELS'][f'{channel_code}']
+        channel_name=config['A2C_CHANNEL_CODE'][f'{channel_code}']
         logger.info(f'{now_date}_{channel_name} 수집시작')
 
-        if channel_code == 3001:
+        if channel_code == '3001':
             from channel.navermap import Navermap
-            navermap = Navermap()
-
-        # if channel_code == 3000:
-        #     from channel.coupang import Coupang
-        #     # coupang = Coupang(server, channel_code, channel_name, placement, url)
-
-        # elif channel_code == 3004:
-        #     from channel.auction import Auction
-        #     # elevenst = Auction(server, channel_code, channel_name, placement, url)
-
-        # elif channel_code == 3005:
-        #     from channel.gmarket import Gmarket
-        #     # elevenst = Gmarket(server, channel_code, channel_name, placement, url)
+            keyword_list = ['서울', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+            url = 'https://www.map.naver.com'
+            for keyword in keyword_list:
+                try:
+                    keyword += ' 클라이밍'
+                    navermap = Navermap(channel_code, channel_name, url, keyword, logger, config, mongo)
+                    navermap.crawl_naver_map()
+                except Exception as e:
+                    logger.error(f'[FAILED] {keyword} 수집 에러')
     except Exception as e:
         logger.error()
     

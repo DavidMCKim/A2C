@@ -8,7 +8,7 @@ db = MONGO()
 router = APIRouter(prefix='/db/mongodb')
 
 @router.post('/GetServerInfo')
-async def insert_climb_info(request: Request):
+async def GetServerInfo(request: Request):
     server_info = {
         'channel_code' : '-1',
         'status'       : '-1'
@@ -32,19 +32,30 @@ async def insert_climb_info(request: Request):
     return server_info
 
 @router.post('/InsertClimbInfo')
-async def insert_climb_info(request: Request):
+async def InsertClimbInfo(request: Request):
     server_info = {
         'channel_code' : '-1'
     }
     try:
         req = await request.json()
-        hostname = req['hostname']
-        query = f'''
-                    select ChannelCode
-                    from tb_Server_Info
-                    where ServerName = '{hostname}'
-                '''
-        data = db.select(query)
+        name = req['name']
+        phone = req['phone']
+        address = req['address']
+        road_address = req['road_address']
+        thum_image = req['thum_image']
+        lng = req['lng']
+        lat = req['lat']
+        collection = 'tb_place_of_climbing'
+        data = {
+                "PlaceName" : f'{name}',
+                'Tel': f'{phone}',
+                'Address':f'{address}',
+                'RoadAddress':f'{road_address}',
+                'ImgUrl':f'{thum_image}',
+                'Lng':f'{lng}',
+                'Lat':f'{lat}',
+            }
+        result = db.insert_one(collection, data)
         if data:
             channel_cdoe = data[0]
 

@@ -26,12 +26,18 @@ class MONGO():
             return channel_code, server_os
         
         # InsertClimbInfo
-    def InsertClimbInfo(self, hostname):
+    def InsertClimbInfo(self, name, phone, category, address, road_address, thum_image, lng, lat):
         try:
             url = self.SOCIAL_API_SERVER_IP + '/mongodb/InsertClimbInfo'
 
             data = {
-                "hostname" : f'{hostname}'
+                "name" : f'{name}',
+                'phone': f'{phone}',
+                'address':f'{address}',
+                'road_address':f'{road_address}',
+                'thum_image':f'{thum_image}',
+                'lng':f'{lng}',
+                'lat':f'{lat}',
             }
             
             req = requests.post(url, json=data, verify=False).text
